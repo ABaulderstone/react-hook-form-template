@@ -6,6 +6,11 @@ import Form from './components/Form';
 import { useForm } from 'react-hook-form';
 
 function App() {
+  const defaultValues = {
+    username: 'Alex',
+    email: 'test@test.com',
+    password: 'password',
+  };
   const schema = yup.object({
     username: yup
       .string()
@@ -25,10 +30,15 @@ function App() {
     register,
     formState: { errors },
     reset,
-  } = useForm({ resolver: yupResolver(schema) });
+  } = useForm({ resolver: yupResolver(schema), defaultValues });
 
   const onSubmit = (data) => {
     console.log('formData:', data);
+    reset();
+  };
+
+  const onDefaultClick = (e) => {
+    console.log('defaults');
     reset();
   };
   return (
@@ -62,7 +72,13 @@ function App() {
             error={errors.password}
           />
         </Form.Field>
-        <button>Submit</button>
+        <div>
+          <button type='reset'>Clear</button>
+          <button onClick={onDefaultClick} type='button'>
+            Default
+          </button>
+          <button type='submit'>Submit</button>
+        </div>
       </Form>
     </>
   );
